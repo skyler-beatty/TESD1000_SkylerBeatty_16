@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@faker-js/faker": "^10.4.0",
-    "@vercel/postgres": "^0.10.0",
     "axios": "latest",
     "bcryptjs": "^3.0.3",
     "faker": "latest",
