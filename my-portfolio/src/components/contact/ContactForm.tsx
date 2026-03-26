@@ -1,5 +1,6 @@
+"use client";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { saveContactInquiry } from "../../actions/contactActions";
 
 const ContactForm = () => {
@@ -8,16 +9,17 @@ const ContactForm = () => {
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
+	const [success, setSuccess] = useState(false);
 	const router = useRouter();
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoading(true);
 		setError("");
-
 		try {
-			await saveInquiry({ name, email, message });
-			router.push("/thank-you"); // Redirect after successful submission
+			await saveContactInquiry({ name, email, message });
+			setSuccess(true);
+			router.push("/");
 		} catch (err) {
 			setError("Failed to send inquiry. Please try again.");
 		} finally {
@@ -26,22 +28,53 @@ const ContactForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
 			<div>
-				<label htmlFor="name">Name:</label>
-				<input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+				<label htmlFor="name" className="block mb-1">
+					Name:
+				</label>
+				<input
+					type="text"
+					id="name"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					required
+					className="border px-3 py-2 rounded w-full"
+				/>
 			</div>
 			<div>
-				<label htmlFor="email">Email:</label>
-				<input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+				<label htmlFor="email" className="block mb-1">
+					Email:
+				</label>
+				<input
+					type="email"
+					id="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					required
+					className="border px-3 py-2 rounded w-full"
+				/>
 			</div>
 			<div>
-				<label htmlFor="message">Message:</label>
-				<textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} required />
+				<label htmlFor="message" className="block mb-1">
+					Message:
+				</label>
+				<textarea
+					id="message"
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
+					required
+					className="border px-3 py-2 rounded w-full"
+				/>
 			</div>
-			{error && <p>{error}</p>}
-			<button type="submit" disabled={loading}>
-				{loading ? "Sending..." : "Send Inquiry"}
+			{error && <p className="text-red-500">{error}</p>}
+			{success && <p className="text-green-500">Message sent!</p>}
+			<button
+				type="submit"
+				disabled={loading}
+				className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+			>
+				{loading ? "Sending..." : "Send Message"}
 			</button>
 		</form>
 	);

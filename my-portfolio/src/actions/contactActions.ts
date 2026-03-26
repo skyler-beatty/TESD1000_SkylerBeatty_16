@@ -1,5 +1,4 @@
 "use server";
-import { sql } from "@vercel/postgres";
 
 export const saveContactInquiry = async (inquiry: { name: string; email: string; message: string }) => {
 	try {

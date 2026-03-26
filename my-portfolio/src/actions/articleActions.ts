@@ -1,5 +1,4 @@
 "use server";
-import { sql } from "@vercel/postgres";
 import { Article } from "../types";
 import { revalidatePath } from "next/cache";
 
